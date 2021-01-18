@@ -1,10 +1,10 @@
 <template>
-  <v-container>
+  <v-container class="container d-flex justify-center flex-wrap pa-0">
     <Loader v-if="products == null" />
     <v-card
       elevation="2"
       :key="product.id"
-      v-for="product of filterProducts"
+      v-for="product of products"
       class="pt-5 mb-15 d-flex flex-column"
       max-width="340"
     >
@@ -51,6 +51,8 @@ export default {
   name: "Item",
   props: {
     products: Array,
+    changeDialog: Function,
+    addProduct: Function,
   },
 };
 </script>

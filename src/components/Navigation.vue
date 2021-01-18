@@ -1,15 +1,7 @@
 <template>
-  <v-container class="d-flex justify-space-between pa-0 pb-5">
+  <v-container class="nav d-flex justify-space-between pa-0 pb-5">
     <v-card width="256" hight="260">
       <v-navigation-drawer permanent>
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title class="title">
-              Меню навигации
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
         <v-divider></v-divider>
 
         <v-list dense nav>
@@ -50,6 +42,8 @@ export default {
 </script>
 
 <style scoped>
+.nav {
+}
 .v-list-item--active {
   color: rgb(35, 135, 175) !important;
 }

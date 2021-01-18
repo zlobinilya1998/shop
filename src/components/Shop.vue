@@ -3,7 +3,7 @@
     <div class="mb-10">
       <v-text-field
         v-model="input.text"
-        label="Поиск"
+        label="Поиск по магазину"
         :rules="input.rules"
         hide-details="auto"
       ></v-text-field>
@@ -57,17 +57,24 @@
       </v-card>
     </v-container>
 
-    <Items v-else />
+    <h3 v-else-if="filterProducts.length == 0">
+      Совпадений по вашему запросу не найдено.
+    </h3>
 
-    <v-container>
-      <v-container v-if="products" class="d-flex justify-center align-center">
-        <v-btn :disabled="currentPage <= 0" @click="currentPage--">Назад</v-btn>
-        <v-btn :disabled="currentPage >= maxPageCount" @click="currentPage++"
-          >Вперед</v-btn
-        >
-      </v-container>
+    <Items
+      v-else
+      :products="filterProducts"
+      :changeDialog="changeDialog"
+      :addProduct="addProduct"
+    />
+    <ItemAbout />
 
-      <ItemAbout />
+    <v-container
+      v-if="products && filterProducts.length !== 0"
+      class="d-flex justify-center align-center"
+    >
+      <v-btn :disabled="currentPage <= 0" @click="currentPage--">Назад</v-btn>
+      <v-btn :disabled="showBtn" @click="currentPage++">Вперед</v-btn>
     </v-container>
   </v-container>
 </template>
@@ -120,10 +127,18 @@ export default {
     },
   },
   computed: {
+    showBtn() {
+      let f = () => {
+        if (this.currentPage >= this.maxPageCount) {
+          return true;
+        } else return false;
+      };
+      return f() || this.input.text !== "";
+    },
     filterProducts() {
       if (this.products) {
         return this.products.filter((elem) =>
-          elem.title[0].toLowerCase().includes(this.input.text.toLowerCase())
+          elem.title.toLowerCase().startsWith(this.input.text.toLowerCase())
         );
       } else return [];
     },

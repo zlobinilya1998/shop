@@ -6,7 +6,6 @@
         <span class="font-weight-black">{{ Math.ceil(getPrice) }}$</span>
       </v-card-text>
     </v-container>
-
     <v-divider></v-divider>
     <template v-for="(product, i) in getBasket">
       <v-list-item :key="i">
@@ -48,6 +47,12 @@
       <v-divider :key="i"></v-divider>
     </template>
   </v-card>
+  <v-container class="smallBasket" v-else>
+    <v-icon class="">mdi-basket-plus </v-icon>
+    <p class="smallBasket__p" v-if="getBasket.length !== 0">
+      {{ getQuantity }}
+    </p>
+  </v-container>
 </template>
 
 <script>
@@ -59,6 +64,14 @@ export default {
     },
   },
   computed: {
+    getQuantity() {
+      let initialValue = 0;
+      let sum = this.$store.getters.getBasket.reduce(
+        (acc, cur) => acc + cur.quantity,
+        initialValue
+      );
+      return sum;
+    },
     getPrice() {
       let initialValue = 0;
       let sum = this.$store.getters.getBasket.reduce(
@@ -86,5 +99,15 @@ export default {
   top: 0;
   right: 0;
   z-index: 1000;
+}
+.smallBasket {
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.smallBasket__p {
+  position: absolute;
+  right: 50px;
 }
 </style>

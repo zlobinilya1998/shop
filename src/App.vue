@@ -18,4 +18,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#app {
+  background: linear-gradient(
+    159deg,
+    rgb(220, 233, 248) 40%,
+    rgb(193, 220, 251) 100%
+  );
+  min-height: 100vh;
+}
+</style>

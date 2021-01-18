@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <h3 class="text-center">
-      {{ showBasket ? "Ваша корзина" : "Корзина пуста" }}
+    <h3 class="text-center pb-5">
+      {{ showBasket ? "Ваша корзина" : "Корзина пока пустая..." }}
     </h3>
     <v-divider />
     <v-simple-table :class="{ position: 'relative' }" v-if="showBasket">
@@ -64,4 +64,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>
