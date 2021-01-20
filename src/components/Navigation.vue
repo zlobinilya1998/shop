@@ -1,28 +1,22 @@
 <template>
-  <v-container class="nav d-flex justify-space-between pa-0 pb-5">
-    <v-card width="256" hight="260">
-      <v-navigation-drawer permanent>
-        <v-divider></v-divider>
+  <nav class="nav">
+    <v-btn
+      icon
+      :style="{ color: 'black' }"
+      :to="item.to"
+      v-for="(item, index) of items"
+      :key="index"
+      ><v-icon>{{ item.icon }}</v-icon></v-btn
+    >
 
-        <v-list dense nav>
-          <v-list-item
-            v-for="item in items"
-            :key="item.title"
-            link
-            :to="item.to"
-          >
-            <v-list-item-icon>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>{{ item.name }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-navigation-drawer>
-    </v-card>
-  </v-container>
+    <v-text-field
+      class="mx-2 pa-0"
+      v-model="input.text"
+      label="Поиск по магазину"
+      :rules="input.rules"
+      hide-details="auto"
+    ></v-text-field>
+  </nav>
 </template>
 
 <script>
@@ -30,6 +24,10 @@ export default {
   name: "Navigation",
   data() {
     return {
+      input: {
+        text: "",
+        rules: [(value) => !!value || "Введите текст"],
+      },
       items: [
         { name: "Домой", icon: "mdi-home", to: "/" },
         { name: "Товары", icon: "mdi-shopping", to: "/shop" },
@@ -37,14 +35,19 @@ export default {
       ],
     };
   },
+  methods: {
+    mounted() {
+      this.getHumans();
+    },
+  },
   components: {},
 };
 </script>
 
 <style scoped>
 .nav {
-}
-.v-list-item--active {
-  color: rgb(35, 135, 175) !important;
+  display: flex;
+  min-width: 15%;
+  width: 50%;
 }
 </style>

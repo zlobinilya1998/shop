@@ -1,27 +1,16 @@
 <template>
-  <v-container>
-    <div class="mb-10">
-      <v-text-field
-        v-model="input.text"
-        label="Поиск по магазину"
-        :rules="input.rules"
-        hide-details="auto"
-      ></v-text-field>
-    </div>
-    <v-container
-      v-if="input.text == 0"
-      class="container d-flex justify-center flex-wrap pa-0"
-    >
+  <div>
+    <div v-if="input.text == 0" class="d-flex justify-center flex-wrap pa-0">
       <Loader v-if="products == null" />
       <v-card
         elevation="2"
         :key="product.id"
         v-for="product of itemsToShow"
-        class="pt-5 mb-15 d-flex flex-column"
+        class="mb-15 d-flex flex-column"
         max-width="340"
       >
         <v-img
-          class="white--text align-end "
+          class="white--text align-end mt-5"
           height="120"
           contain
           :src="product.image"
@@ -55,7 +44,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-container>
+    </div>
 
     <h3 v-else-if="filterProducts.length == 0">
       Совпадений по вашему запросу не найдено.
@@ -73,10 +62,16 @@
       v-if="products && filterProducts.length !== 0"
       class="d-flex justify-center align-center"
     >
-      <v-btn :disabled="currentPage <= 0" @click="currentPage--">Назад</v-btn>
-      <v-btn :disabled="showBtn" @click="currentPage++">Вперед</v-btn>
+      <v-btn class="btn" :disabled="currentPage <= 0" @click="currentPage--">
+        <v-icon>mdi-page-previous</v-icon>
+        Назад
+      </v-btn>
+      <v-btn class="btn" :disabled="showBtn" @click="currentPage++"
+        >Вперед
+        <v-icon>mdi-page-next</v-icon>
+      </v-btn>
     </v-container>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -92,10 +87,6 @@ export default {
   },
   data() {
     return {
-      input: {
-        text: "",
-        rules: [(value) => !!value || "Введите текст"],
-      },
       products: null,
       itemsPrice: 0,
       itemsOnPage: 6,
@@ -170,5 +161,10 @@ export default {
 <style scoped>
 .price {
   color: rgb(39, 165, 35) !important;
+}
+.btn {
+  width: 8rem;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

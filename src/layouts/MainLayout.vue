@@ -1,11 +1,9 @@
 <template>
-  <v-container>
-    <v-container class="d-flex" style="{zIndex:}">
-      <Navigation />
-      <AlertBasket />
-    </v-container>
+  <main class="d-flex flex-column">
+    <Navigation />
+    <AlertBasket />
     <router-view />
-  </v-container>
+  </main>
 </template>
 
 <script>
@@ -21,4 +19,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+main {
+  width: 80%;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+.parallax {
+}
+</style>

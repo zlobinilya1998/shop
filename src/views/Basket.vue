@@ -18,11 +18,7 @@
         <tbody>
           <tr v-for="product in getBasket" :key="product.name">
             <td>
-              <v-list-item-avatar
-                tile
-                size="inherit"
-                max-width="50"
-                color="grey"
+              <v-list-item-avatar size="inherit" max-width="50" tile
                 ><v-img :src="product.image" :alt="product.image"
               /></v-list-item-avatar>
             </td>
