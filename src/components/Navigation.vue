@@ -16,12 +16,14 @@
     >
       /></v-text-field
     >
-    <v-icon
-      class="closeButton"
-      @click="input.text = ''"
-      v-if="input.text !== ''"
-      >mdi-close-circle</v-icon
-    >
+    <transition name="fade">
+      <v-icon
+        class="closeButton"
+        @click="input.text = ''"
+        v-if="input.text !== ''"
+        >mdi-close-circle</v-icon
+      >
+    </transition>
   </nav>
 </template>
 
@@ -62,5 +64,13 @@ export default {
   display: flex;
   min-width: 15%;
   width: 50%;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
