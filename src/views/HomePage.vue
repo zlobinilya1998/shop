@@ -1,9 +1,13 @@
 <template>
-  <h1>Jopa</h1>
+  <Welcome />
 </template>
 
 <script>
-export default {};
+import Welcome from "../components/Welcome";
+export default {
+  name: "HomePage",
+  components: { Welcome },
+};
 </script>
 
 <style></style>

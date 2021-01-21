@@ -6,7 +6,7 @@
       :to="item.to"
       v-for="(item, index) of items"
       :key="index"
-      ><v-icon>{{ item.icon }}</v-icon></v-btn
+      ><v-icon class="icon">{{ item.icon }}</v-icon></v-btn
     >
 
     <v-text-field
@@ -35,16 +35,15 @@ export default {
       ],
     };
   },
-  methods: {
-    mounted() {
-      this.getHumans();
-    },
-  },
+
   components: {},
 };
 </script>
 
 <style scoped>
+.v-btn--active .icon {
+  color: #ffffff !important;
+}
 .nav {
   display: flex;
   min-width: 15%;

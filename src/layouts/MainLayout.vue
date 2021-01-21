@@ -2,7 +2,9 @@
   <main class="d-flex flex-column">
     <Navigation />
     <AlertBasket />
-    <router-view />
+    <v-container class="mt-10">
+      <router-view />
+    </v-container>
   </main>
 </template>
 
@@ -24,7 +26,5 @@ main {
   width: 80%;
   min-height: 100vh;
   margin: 0 auto;
-}
-.parallax {
 }
 </style>

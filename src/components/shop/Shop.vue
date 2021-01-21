@@ -1,92 +1,75 @@
 <template>
   <div>
-    <div v-if="input.text == 0" class="d-flex justify-center flex-wrap pa-0">
+    <div class="d-flex justify-center flex-wrap pa-0">
       <Loader v-if="products == null" />
-      <v-card
-        elevation="2"
-        :key="product.id"
-        v-for="product of itemsToShow"
-        class="mb-15 d-flex flex-column"
-        max-width="340"
+      <ItemCard
+        v-for="(product, index) of itemsToShow"
+        :key="`Product #${index}`"
+        :product="product"
+        :changeDialog="changeDialog"
+        :addProduct="addProduct"
+      />
+      <v-container
+        v-if="products !== null"
+        class="d-flex justify-center align-center"
       >
-        <v-img
-          class="white--text align-end mt-5"
-          height="120"
-          contain
-          :src="product.image"
-          @click="changeDialog(product, products)"
+        <v-btn
+          @mouseenter="activeBtn.prev = true"
+          @mouseleave="activeBtn.prev = false"
+          class="btn"
+          :disabled="currentPage <= 0"
+          @click="currentPage--"
         >
-          <template v-slot:placeholder>
-            <v-row class="fill-height ma-0" align="start" justify="center">
-              <v-progress-circular
-                indeterminate
-                color="grey lighten-5"
-              ></v-progress-circular>
-            </v-row>
-          </template>
-        </v-img>
-        <v-card-subtitle align="center" class="price">
-          {{ product.price }} $
-        </v-card-subtitle>
-        <v-divider></v-divider>
-        <v-card-title class="d-flex justify-center text-center">{{
-          product.title
-            .split(" ")
-            .slice(0, 4)
-            .join(" ")
-        }}</v-card-title>
-
-        <v-card-actions>
-          <v-divider></v-divider>
-
-          <v-btn @click="addProduct(product)" color="light-blue accent-3" text>
-            Добавить в корзину
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+          <v-icon :class="{ activeBtn: activeBtn.prev }"
+            >mdi-page-previous</v-icon
+          >
+          Назад
+        </v-btn>
+        <v-btn
+          @mouseenter="activeBtn.next = true"
+          @mouseleave="activeBtn.next = false"
+          class="btn"
+          :disabled="showBtn"
+          @click="currentPage++"
+          >Вперед
+          <v-icon :class="{ activeBtn: activeBtn.next }">mdi-page-next</v-icon>
+        </v-btn>
+      </v-container>
     </div>
 
-    <h3 v-else-if="filterProducts.length == 0">
+    <!-- <h3 v-else-if="filterProducts.length == 0">
       Совпадений по вашему запросу не найдено.
-    </h3>
+    </h3> -->
 
-    <Items
+    <!-- <Items
       v-else
       :products="filterProducts"
       :changeDialog="changeDialog"
       :addProduct="addProduct"
-    />
+    /> -->
     <ItemAbout />
-
-    <v-container
-      v-if="products && filterProducts.length !== 0"
-      class="d-flex justify-center align-center"
-    >
-      <v-btn class="btn" :disabled="currentPage <= 0" @click="currentPage--">
-        <v-icon>mdi-page-previous</v-icon>
-        Назад
-      </v-btn>
-      <v-btn class="btn" :disabled="showBtn" @click="currentPage++"
-        >Вперед
-        <v-icon>mdi-page-next</v-icon>
-      </v-btn>
-    </v-container>
   </div>
 </template>
 
 <script>
-import Loader from "./Loader";
-import ItemAbout from "./ItemAbout";
-import Items from "./Items.vue";
+import Loader from "../shop/Loader";
+import ItemAbout from "../shop/ItemAbout";
+import ItemCard from "../shop/ItemCard";
+// import Items from "./Items.vue";
 export default {
   name: "Shop",
   components: {
     Loader,
     ItemAbout,
-    Items,
+    ItemCard,
+    // Items,
   },
   data() {
     return {
+      activeBtn: {
+        prev: false,
+        next: false,
+      },
       products: null,
       itemsPrice: 0,
       itemsOnPage: 6,
@@ -101,12 +84,11 @@ export default {
       this.$store.dispatch("addProduct", product);
     },
     getProducts() {
-      let get = async () => {
+      (async () => {
         let res = await fetch("https://fakestoreapi.com/products?limit=25");
         let json = await res.json();
         this.products = await json;
-      };
-      get();
+      })();
     },
     addAnswer(item) {
       this.answersPrice += item.price;
@@ -124,7 +106,7 @@ export default {
           return true;
         } else return false;
       };
-      return f() || this.input.text !== "";
+      return f();
     },
     filterProducts() {
       if (this.products) {
@@ -159,8 +141,8 @@ export default {
 </script>
 
 <style scoped>
-.price {
-  color: rgb(39, 165, 35) !important;
+.activeBtn {
+  color: rgba(129, 238, 147, 0.719) !important;
 }
 .btn {
   width: 8rem;

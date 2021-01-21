@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Shop from "../components/Shop";
+import Shop from "../components/shop/Shop";
 export default {
   components: { Shop },
 };
