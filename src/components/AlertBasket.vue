@@ -11,17 +11,12 @@
       <v-list-item class="pa-0" :key="i">
         <v-list-item-content class="pa-0">
           <v-container class="d-flex justify-space-between pa-0 mt-2">
-            <div
-              :style="{
-                color: 'red',
-                fontStyle: 'oblique',
-                fontWeight: 'bolder',
-              }"
-              class="overline font-weight-medium"
-            >
+            <div :style="basketStyle" class="overline font-weight-medium">
               {{ product.price }}$
             </div>
-            <v-icon @click="deleteProduct(i)">mdi-close-circle</v-icon>
+            <v-icon class="closeButton" @click="deleteProduct(i)"
+              >mdi-close-circle</v-icon
+            >
           </v-container>
           <v-container class="pa-0 d-flex justify-center">
             <v-list-item-avatar
@@ -43,10 +38,7 @@
               }}</span></v-list-item-subtitle
             >
             <v-list-item-subtitle :style="{ color: 'black' }">{{
-              product.title
-                .split(" ")
-                .slice(0, 3)
-                .join(" ")
+              getTitle(product.title)
             }}</v-list-item-subtitle>
           </v-container>
         </v-list-item-content>
@@ -58,10 +50,21 @@
 
 <script>
 export default {
+  data() {
+    return {
+      basketStyle: { color: "red", fontStyle: "oblique", fontWeight: "bolder" },
+    };
+  },
   name: "AlertBasket",
   methods: {
     deleteProduct(index) {
       this.$store.dispatch("deleteProduct", index);
+    },
+    getTitle(title) {
+      return title
+        .split(" ")
+        .slice(0, 3)
+        .join(" ");
     },
   },
   computed: {
@@ -92,6 +95,9 @@ export default {
 </script>
 
 <style>
+.closeButton:hover {
+  color: #f66161 !important;
+}
 .basket {
   position: absolute !important;
   right: 2%;

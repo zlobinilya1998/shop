@@ -3,6 +3,7 @@
     <div class="d-flex justify-center flex-wrap pa-0">
       <Loader v-if="products == null" />
       <ItemCard
+        class="itemCard"
         v-for="(product, index) of itemsToShow"
         :key="`Product #${index}`"
         :product="product"
@@ -141,6 +142,10 @@ export default {
 </script>
 
 <style scoped>
+.itemCard {
+  cursor: pointer;
+}
+
 .activeBtn {
   color: rgba(129, 238, 147, 0.719) !important;
 }

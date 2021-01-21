@@ -3,7 +3,7 @@
     @mouseenter="active = true"
     @mouseleave="active = false"
     elevation="2"
-    class="mb-15 d-flex flex-column"
+    class="mb-15 d-flex flex-column card"
     max-width="340"
   >
     <v-img
@@ -69,6 +69,9 @@ export default {
 </script>
 
 <style scoped>
+.card:hover .title {
+  transform: translateY(-0.3rem);
+}
 .title {
   transition: all 0.3s ease;
 }

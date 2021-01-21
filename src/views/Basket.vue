@@ -4,6 +4,7 @@
       {{ showBasket ? "Ваша корзина" : "Корзина пока пустая..." }}
     </h3>
     <v-divider />
+
     <v-simple-table :class="{ position: 'relative' }" v-if="showBasket">
       <template v-slot:default>
         <thead>

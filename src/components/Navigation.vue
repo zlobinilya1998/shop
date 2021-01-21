@@ -8,14 +8,20 @@
       :key="index"
       ><v-icon class="icon">{{ item.icon }}</v-icon></v-btn
     >
-
     <v-text-field
       class="mx-2 pa-0"
       v-model="input.text"
       label="Поиск по магазину"
-      :rules="input.rules"
       hide-details="auto"
-    ></v-text-field>
+    >
+      /></v-text-field
+    >
+    <v-icon
+      class="closeButton"
+      @click="input.text = ''"
+      v-if="input.text !== ''"
+      >mdi-close-circle</v-icon
+    >
   </nav>
 </template>
 
@@ -26,7 +32,6 @@ export default {
     return {
       input: {
         text: "",
-        rules: [(value) => !!value || "Введите текст"],
       },
       items: [
         { name: "Домой", icon: "mdi-home", to: "/" },
@@ -41,10 +46,19 @@ export default {
 </script>
 
 <style scoped>
+.closeButton {
+  position: absolute !important;
+  right: 0.5rem;
+  top: 0.4rem;
+}
+.closeButton:hover {
+  color: #f66161 !important;
+}
 .v-btn--active .icon {
   color: #ffffff !important;
 }
 .nav {
+  position: relative;
   display: flex;
   min-width: 15%;
   width: 50%;

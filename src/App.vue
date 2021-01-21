@@ -24,5 +24,6 @@ export default {
   width: 100vw;
   min-height: 100vh;
   padding: 1rem;
+  position: relative;
 }
 </style>

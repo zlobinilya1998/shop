@@ -18,6 +18,7 @@ export default {
     Navigation,
     AlertBasket,
   },
+  methods: {},
 };
 </script>
 
