@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     basket: [],
+    shopProducts: null,
     dialog: {
       header: "",
       text: "",
@@ -34,8 +35,14 @@ export default new Vuex.Store({
       dialog.header = product.title;
       dialog.text = product.description;
     },
+    setProducts: (state, products) => {
+      state.shopProducts = products;
+    },
   },
   actions: {
+    setProducts({ commit }, products) {
+      commit("setProducts", products);
+    },
     addProduct({ commit }, product) {
       commit("addProduct", product);
     },
@@ -55,6 +62,9 @@ export default new Vuex.Store({
     },
     getBasket: (state) => {
       return state.basket;
+    },
+    getProducts: (state) => {
+      return state.shopProducts;
     },
   },
 });

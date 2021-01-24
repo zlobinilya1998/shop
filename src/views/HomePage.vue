@@ -3,7 +3,7 @@
     <v-container class="banner">
       <p class="text-center ma-0">Скидки до -50% на одежду для отдыха</p>
     </v-container>
-    <v-container>
+    <v-container class="pa-0">
       <section class="d-flex flex-wrap justify-space-between pa-0 mt-5">
         <Welcome
           v-for="(card, index) of cards"
@@ -13,8 +13,6 @@
         />
       </section>
     </v-container>
-
-    <v-container> 12 </v-container>
   </v-container>
 </template>
 
@@ -24,31 +22,23 @@ import img2 from "../assets/home/2.jpg";
 import img3 from "../assets/home/3.webp";
 import img4 from "../assets/home/4.webp";
 import Welcome from "../components/Welcome";
+
+class Card {
+  constructor(title, img) {
+    this.title = title;
+    this.img = img;
+  }
+}
+
 export default {
   name: "HomePage",
   data() {
     return {
       cards: [
-        {
-          title: "Новинки для дома",
-          img: img,
-          text: "im 1st card",
-        },
-        {
-          title: "Холодная погода",
-          img: img2,
-          text: "im 1st card",
-        },
-        {
-          title: "Одежда денима",
-          img: img3,
-          text: "im 1st card",
-        },
-        {
-          title: "Кроссовки",
-          img: img4,
-          text: "im 1st card",
-        },
+        new Card("Новинки для дома", img),
+        new Card("Холодная погода", img2),
+        new Card("Одежда денима", img3),
+        new Card("Кроссовки", img4),
       ],
     };
   },
