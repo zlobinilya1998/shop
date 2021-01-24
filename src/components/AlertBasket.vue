@@ -118,6 +118,7 @@ export default {
 }
 .basket {
   position: absolute !important;
+  z-index: 2;
   right: 2%;
   height: 20rem;
   min-width: 15rem;

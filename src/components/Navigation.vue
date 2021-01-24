@@ -10,17 +10,15 @@
     >
     <v-text-field
       class="mx-2 pa-0"
-      v-model="input.text"
       label="Поиск по магазину"
       hide-details="auto"
+      :value="getInput"
+      @input="changeInput"
     >
       /></v-text-field
     >
     <transition name="fade">
-      <v-icon
-        class="closeButton"
-        @click="input.text = ''"
-        v-if="input.text !== ''"
+      <v-icon class="closeButton" @click="clearInput" v-if="getInput !== ''"
         >mdi-close-circle</v-icon
       >
     </transition>
@@ -32,9 +30,6 @@ export default {
   name: "Navigation",
   data() {
     return {
-      input: {
-        text: "",
-      },
       items: [
         { name: "Домой", icon: "mdi-home", to: "/" },
         { name: "Товары", icon: "mdi-shopping", to: "/shop" },
@@ -42,9 +37,19 @@ export default {
       ],
     };
   },
-  computed: {},
-  methods: {},
-  components: {},
+  computed: {
+    getInput() {
+      return this.$store.getters.getSearchItemField;
+    },
+  },
+  methods: {
+    changeInput(value) {
+      this.$store.dispatch("changeInput", value);
+    },
+    clearInput() {
+      this.$store.dispatch("clearInput");
+    },
+  },
 };
 </script>
 

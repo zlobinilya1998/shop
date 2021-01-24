@@ -14,6 +14,11 @@ import AlertBasket from "../components/AlertBasket";
 
 export default {
   name: "MainLayout",
+  data() {
+    return {
+      input: "",
+    };
+  },
   components: {
     Navigation,
     AlertBasket,

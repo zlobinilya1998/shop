@@ -1,17 +1,24 @@
 <template>
   <div>
     <div class="d-flex justify-center flex-wrap pa-0">
-      <Loader v-if="products == null" />
+      <Loader v-if="itemsToShow == null" />
       <ItemCard
         class="itemCard"
-        v-for="(product, index) of itemsToShow"
+        v-for="(product, index) of filteredProducts"
         :key="`Product #${index}`"
         :product="product"
         :changeDialog="changeDialog"
         :addProduct="addProduct"
       />
+
+      <transition name="zeroMatches">
+        <h3 v-if="filteredProducts.length == 0">
+          Совпадений по вашему запросу не найдено.
+        </h3>
+      </transition>
+
       <v-container
-        v-if="products !== null"
+        v-if="itemsToShow !== null && filteredProducts.length !== 0"
         class="d-flex justify-center align-center"
       >
         <v-btn
@@ -38,16 +45,6 @@
       </v-container>
     </div>
 
-    <!-- <h3 v-else-if="filterProducts.length == 0">
-      Совпадений по вашему запросу не найдено.
-    </h3> -->
-
-    <!-- <Items
-      v-else
-      :products="filterProducts"
-      :changeDialog="changeDialog"
-      :addProduct="addProduct"
-    /> -->
     <ItemAbout />
   </div>
 </template>
@@ -56,14 +53,12 @@
 import Loader from "@/components/shop/Loader";
 import ItemAbout from "@/components/shop/ItemAbout";
 import ItemCard from "@/components/shop/ItemCard";
-// import Items from "./Items.vue";
 export default {
   name: "Shop",
   components: {
     Loader,
     ItemAbout,
     ItemCard,
-    // Items,
   },
   data() {
     return {
@@ -71,11 +66,13 @@ export default {
         prev: false,
         next: false,
       },
-      products: null,
       itemsPrice: 0,
       itemsOnPage: 6,
       currentPage: 0,
     };
+  },
+  props: {
+    input: String,
   },
   methods: {
     changeDialog(product) {
@@ -87,7 +84,6 @@ export default {
     async getProducts() {
       let res = await fetch("https://fakestoreapi.com/products?limit=25");
       let json = await res.json();
-      this.products = json;
       this.$store.dispatch("setProducts", json);
     },
     addAnswer(item) {
@@ -105,7 +101,10 @@ export default {
     },
     showBtn() {
       let f = () => {
-        if (this.currentPage >= this.maxPageCount) {
+        if (
+          this.currentPage >= this.maxPageCount &&
+          this.filteredProducts.length < this.itemsOnPage
+        ) {
           return true;
         } else return false;
       };
@@ -114,19 +113,30 @@ export default {
     getBasket() {
       return this.$store.getters.getBasket;
     },
+    getInput() {
+      return this.$store.getters.getSearchItemField;
+    },
     maxPageCount() {
-      if (this.products) {
-        return Math.ceil(this.products.length / this.itemsOnPage) - 1;
+      if (this.getProductsFromStore) {
+        return (
+          Math.ceil(this.getProductsFromStore.length / this.itemsOnPage) - 1
+        );
       } else return null;
     },
+    filteredProducts() {
+      if (this.getInput !== "" && this.getProductsFromStore !== null) {
+        return this.getProductsFromStore.filter((elem) =>
+          elem.title.toLowerCase().includes(this.getInput.toLowerCase())
+        );
+      } else return this.getProductsFromStore;
+    },
     itemsToShow() {
-      if (this.products !== null) {
-        return this.products.slice(
+      if (this.getProductsFromStore !== null) {
+        return this.getProductsFromStore.slice(
           this.currentPage * this.itemsOnPage,
           this.itemsOnPage * (this.currentPage + 1)
         );
-      }
-      return [];
+      } else return null;
     },
   },
 
@@ -137,6 +147,16 @@ export default {
 </script>
 
 <style scoped>
+.zeroMatches-enter-active,
+.fade-leave-active {
+  transition: all 0.5s;
+}
+.zeroMatches-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(3rem);
+}
+
 .itemCard {
   cursor: pointer;
 }

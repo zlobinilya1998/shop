@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     basket: [],
     shopProducts: null,
+    searchItemField: "",
     dialog: {
       header: "",
       text: "",
@@ -38,6 +39,12 @@ export default new Vuex.Store({
     setProducts: (state, products) => {
       state.shopProducts = products;
     },
+    changeInput: (state, payload) => {
+      state.searchItemField = payload;
+    },
+    clearInput: (state) => {
+      state.searchItemField = "";
+    },
   },
   actions: {
     setProducts({ commit }, products) {
@@ -55,6 +62,12 @@ export default new Vuex.Store({
     changeDialog({ commit }, product) {
       commit("changeDialog", product);
     },
+    changeInput({ commit }, payload) {
+      commit("changeInput", payload);
+    },
+    clearInput({ commit }) {
+      commit("clearInput");
+    },
   },
   getters: {
     getDialog: (state) => {
@@ -65,6 +78,9 @@ export default new Vuex.Store({
     },
     getProducts: (state) => {
       return state.shopProducts;
+    },
+    getSearchItemField: (state) => {
+      return state.searchItemField;
     },
   },
 });
