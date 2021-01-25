@@ -82,5 +82,8 @@ export default new Vuex.Store({
     getSearchItemField: (state) => {
       return state.searchItemField;
     },
+    categoryProducts: (state) => (category) => {
+      return state.shopProducts.filter((elem) => elem.category == category);
+    },
   },
 });

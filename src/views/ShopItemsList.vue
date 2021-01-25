@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex justify-center flex-wrap pa-0">
-      <Loader v-if="itemsToShow == null" />
+      <Loader v-if="getProductsFromStore == 0" />
       <ItemCard
         class="itemCard"
         v-for="(product, index) of filteredProducts"
@@ -12,7 +12,7 @@
       />
 
       <transition name="zeroMatches">
-        <h3 v-if="filteredProducts.length == 0">
+        <h3 v-if="showEmptyText">
           Совпадений по вашему запросу не найдено.
         </h3>
       </transition>
@@ -28,9 +28,7 @@
           :disabled="currentPage <= 0"
           @click="currentPage--"
         >
-          <v-icon :class="{ activeBtn: activeBtn.prev }"
-            >mdi-page-previous</v-icon
-          >
+          <v-icon>mdi-page-previous</v-icon>
           Назад
         </v-btn>
         <v-btn
@@ -40,7 +38,7 @@
           :disabled="showBtn"
           @click="currentPage++"
           >Вперед
-          <v-icon :class="{ activeBtn: activeBtn.next }">mdi-page-next</v-icon>
+          <v-icon>mdi-page-next</v-icon>
         </v-btn>
       </v-container>
     </div>
@@ -62,10 +60,6 @@ export default {
   },
   data() {
     return {
-      activeBtn: {
-        prev: false,
-        next: false,
-      },
       itemsPrice: 0,
       itemsOnPage: 6,
       currentPage: 0,
@@ -81,11 +75,6 @@ export default {
     addProduct(product) {
       this.$store.dispatch("addProduct", product);
     },
-    async getProducts() {
-      let res = await fetch("https://fakestoreapi.com/products?limit=25");
-      let json = await res.json();
-      this.$store.dispatch("setProducts", json);
-    },
     addAnswer(item) {
       this.answersPrice += item.price;
       this.answers.push(item);
@@ -96,6 +85,11 @@ export default {
     },
   },
   computed: {
+    showEmptyText() {
+      if (this.filteredProducts.length !== 0) {
+        return false;
+      } else return true;
+    },
     getProductsFromStore() {
       return this.$store.getters.getProducts;
     },
@@ -117,7 +111,7 @@ export default {
       return this.$store.getters.getSearchItemField;
     },
     maxPageCount() {
-      if (this.getProductsFromStore) {
+      if (this.getProductsFromStore !== null) {
         return (
           Math.ceil(this.getProductsFromStore.length / this.itemsOnPage) - 1
         );
@@ -128,7 +122,7 @@ export default {
         return this.getProductsFromStore.filter((elem) =>
           elem.title.toLowerCase().includes(this.getInput.toLowerCase())
         );
-      } else return this.getProductsFromStore;
+      } else return this.itemsToShow;
     },
     itemsToShow() {
       if (this.getProductsFromStore !== null) {
@@ -138,10 +132,6 @@ export default {
         );
       } else return null;
     },
-  },
-
-  mounted() {
-    this.getProducts();
   },
 };
 </script>

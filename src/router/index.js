@@ -19,6 +19,16 @@ const routes = [
     name: "Basket",
     component: () => import("../views/Basket"),
   },
+  {
+    path: "/:category",
+    name: "Category",
+    component: () => import("../views/Category"),
+  },
+  {
+    path: "/category/item/:index",
+    name: "Items",
+    component: () => import("../components/Item"),
+  },
 ];
 const router = new VueRouter({ routes, mode: "history" });
 

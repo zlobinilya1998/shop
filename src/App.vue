@@ -14,7 +14,16 @@ export default {
   },
 
   data: () => ({}),
-  methods: {},
+  methods: {
+    async getProducts() {
+      let res = await fetch("https://fakestoreapi.com/products?limit=25");
+      let json = await res.json();
+      this.$store.dispatch("setProducts", json);
+    },
+  },
+  mounted() {
+    this.getProducts();
+  },
 };
 </script>
 

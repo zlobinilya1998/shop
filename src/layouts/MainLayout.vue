@@ -2,7 +2,7 @@
   <main class="d-flex flex-column">
     <Navigation />
     <AlertBasket />
-    <v-container class="mt-10">
+    <v-container class="mt-10 pa-0">
       <router-view />
     </v-container>
   </main>
@@ -14,16 +14,10 @@ import AlertBasket from "../components/AlertBasket";
 
 export default {
   name: "MainLayout",
-  data() {
-    return {
-      input: "",
-    };
-  },
   components: {
     Navigation,
     AlertBasket,
   },
-  methods: {},
 };
 </script>
 
