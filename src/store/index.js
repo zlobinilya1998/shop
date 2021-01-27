@@ -54,7 +54,7 @@ export default new Vuex.Store({
       commit("addProduct", product);
     },
     deleteProduct({ commit }, index) {
-      commit("deleteProduct", index);
+      setTimeout(commit("deleteProduct", index), 300);
     },
     showDialog({ commit }) {
       commit("showDialog");

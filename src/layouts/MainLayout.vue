@@ -2,7 +2,7 @@
   <main class="d-flex flex-column">
     <Navigation />
     <AlertBasket />
-    <v-container class="mt-10 pa-0">
+    <v-container class="mt-10">
       <router-view />
     </v-container>
   </main>

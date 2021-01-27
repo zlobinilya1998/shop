@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex justify-center flex-wrap pa-0">
-      <Loader v-if="getProductsFromStore == 0" />
+      <Loader v-if="!getProductsFromStore" />
       <ItemCard
         class="itemCard"
         v-for="(product, index) of filteredProducts"
@@ -19,24 +19,13 @@
 
       <v-container
         v-if="itemsToShow !== null && filteredProducts.length !== 0"
-        class="d-flex justify-center align-center"
+        class="d-flex justify-center align-center mb-5"
       >
-        <v-btn
-          @mouseenter="activeBtn.prev = true"
-          @mouseleave="activeBtn.prev = false"
-          class="btn"
-          :disabled="currentPage <= 0"
-          @click="currentPage--"
-        >
+        <v-btn class="btn" :disabled="currentPage <= 0" @click="currentPage--">
           <v-icon>mdi-page-previous</v-icon>
           Назад
         </v-btn>
-        <v-btn
-          @mouseenter="activeBtn.next = true"
-          @mouseleave="activeBtn.next = false"
-          class="btn"
-          :disabled="showBtn"
-          @click="currentPage++"
+        <v-btn class="btn" :disabled="showBtn" @click="currentPage++"
           >Вперед
           <v-icon>mdi-page-next</v-icon>
         </v-btn>
@@ -69,6 +58,11 @@ export default {
     input: String,
   },
   methods: {
+    async getProducts() {
+      let res = await fetch("https://fakestoreapi.com/products?limit=25");
+      let json = await res.json();
+      this.$store.dispatch("setProducts", json);
+    },
     changeDialog(product) {
       this.$store.dispatch("changeDialog", product);
     },
@@ -84,11 +78,12 @@ export default {
       this.answers.splice(index, 1);
     },
   },
+
   computed: {
     showEmptyText() {
-      if (this.filteredProducts.length !== 0) {
-        return false;
-      } else return true;
+      if (this.filteredProducts && this.filteredProducts.length == 0) {
+        return true;
+      } else return false;
     },
     getProductsFromStore() {
       return this.$store.getters.getProducts;
@@ -132,6 +127,9 @@ export default {
         );
       } else return null;
     },
+  },
+  mounted() {
+    this.getProducts();
   },
 };
 </script>

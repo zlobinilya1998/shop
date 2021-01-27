@@ -3,6 +3,7 @@
     <v-btn
       icon
       :style="{ color: 'black' }"
+      :class="index == 2 ? { activeBtn: getBasket.length !== 0 } : undefined"
       :to="item.to"
       v-for="(item, index) of items"
       :key="index"
@@ -41,6 +42,9 @@ export default {
     getInput() {
       return this.$store.getters.getSearchItemField;
     },
+    getBasket() {
+      return this.$store.getters.getBasket;
+    },
   },
   methods: {
     changeInput(value) {
@@ -78,5 +82,25 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+.activeBtn {
+  animation: spin 3.5s ease-in-out 0s normal none infinite running;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 </style>
